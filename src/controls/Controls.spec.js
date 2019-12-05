@@ -1,11 +1,9 @@
 import React from 'react';
 import * as rtl from 'react-testing-library';
 import 'jest-dom/extend-expect';
-import {cleanup, render} from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 
 import Controls from './Controls';
-
-afterEach(cleanup);
 
 describe ('should match snapshot', () => {
     it('defaults to unlocked and open gate', () => {
@@ -16,11 +14,21 @@ describe ('should match snapshot', () => {
 
 describe ('Open Gate is Disabled', () => {
     it('Gate is Locked. Open Button is Disabled', () => {
-        const mock = jest.fn();
-        const { queryByText } = render (
-            <Controls locked={true} closed={true} toggleLocked={mock} />
+        const { getByText } = render (
+            <Controls locked={true} closed={true} />
         );
-        const openButton = queryByText("Open Gate");
+        const openButton = getByText("Open Gate");
         expect (openButton.disabled).toBe(true)
+    })
+});
+
+describe('<Controls/>', () => {
+    it('Unlocked and Open', () => {
+        const { getByText } = render(
+            <Controls locked={false} closed={false} />
+        );
+        const closeGateBtn = getByText('Close Gate')
+        expect(closeGateBtn.disabled).toBe(false)
+
     })
 })

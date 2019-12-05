@@ -5,7 +5,7 @@ import Display from './Display';
 
 describe ('<Display />', () => {
     
-    it ('Shows state (unlocked, open)',()=>{
+    it ('Shows (unlocked, open)',()=>{
         const { getByText } = render(<Display/>);
         expect(getByText('Unlocked'));
         expect(getByText('Open'));
