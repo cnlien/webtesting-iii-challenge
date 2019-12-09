@@ -13,7 +13,10 @@ describe ('<Display />', () => {
 
     it('Uses props to change state', () => {
         const { getByText } = render(
-            <Display locked={true} closed={true} />
+            <Display
+                locked={true}
+                closed={true}
+            />
         );
         expect(getByText('Locked'));
         expect(getByText('Closed'));

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Should Match Snapshot Renders the Dashboard 1`] = `
+exports[`Should Match Snapshot Renders the Default Gate Unlocked and Open 1`] = `
 <body>
   <div>
     <div

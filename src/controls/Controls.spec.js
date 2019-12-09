@@ -1,34 +1,59 @@
 import React from 'react';
-import * as rtl from 'react-testing-library';
 import 'jest-dom/extend-expect';
 import { render, fireEvent } from '@testing-library/react';
 
 import Controls from './Controls';
 
-describe ('should match snapshot', () => {
-    it('defaults to unlocked and open gate', () => {
-        const controls = rtl.render(<Controls />);
-        expect(controls.baseElement).toMatchSnapshot();
-    });
-});
+describe('<Controls />', () => {
 
-describe ('Open Gate is Disabled', () => {
-    it('Gate is Locked. Open Button is Disabled', () => {
-        const { getByText } = render (
-            <Controls locked={true} closed={true} />
-        );
-        const openButton = getByText("Open Gate");
-        expect (openButton.disabled).toBe(true)
+    it('Gate is Opened and Unlocked', () => {
+      const mock = jest.fn();
+      const { queryByText } = render(
+        <Controls 
+            locked={false}
+            closed={false}
+            toggleClosed={mock}
+        />);
+      const lockGate = queryByText("Lock Gate");
+      const closeButton = queryByText("Close Gate");
+
+      expect(lockGate.disabled).toBe(true)
+      expect(closeButton.disabled).toBe(false)
+      fireEvent.click(closeButton);
+      expect(mock).toBeCalled()
     })
-});
 
-describe('<Controls/>', () => {
-    it('Unlocked and Open', () => {
-        const { getByText } = render(
-            <Controls locked={false} closed={false} />
-        );
-        const closeGateBtn = getByText('Close Gate')
-        expect(closeGateBtn.disabled).toBe(false)
+    it('Gate is Closed and Unlocked', () => {
+      const mock = jest.fn();
+      const { queryByText } = render(
+        <Controls
+            locked={false}
+            closed={true}
+            toggleClosed={mock}
+        />);
+      const lockGate = queryByText("Lock Gate");
+      const openButton = queryByText("Open Gate");
 
+      expect(lockGate.disabled).toBe(false)
+      expect(openButton.disabled).toBe(false)
+      fireEvent.click(openButton);
+      expect(mock).toBeCalled()
     })
-})
+
+    it('Gate is Closed and Locked', () => {
+      const mock = jest.fn();
+      const { queryByText } = render(
+        <Controls 
+            locked={true} 
+            closed={true} 
+            toggleLocked={mock}
+        />);
+      const unlockButton = queryByText("Unlock Gate");
+      const openButton = queryByText("Open Gate");
+
+      expect(unlockButton.disabled).toBe(false)
+      expect(openButton.disabled).toBe(true)
+      fireEvent.click(unlockButton);
+      expect(mock).toBeCalled()
+    })
+  })
